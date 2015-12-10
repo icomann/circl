@@ -1,4 +1,4 @@
-print "Loading physics"
-import phys
+print "Loading engine"
+import engine
 print "Loading loader... yep"
 import mapinfo
