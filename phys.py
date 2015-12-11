@@ -47,8 +47,11 @@ class physicsobj:
         self.mass = mass
         self.a = vector(0,0)
         self.v = vector(0,0)
-    def appforce(vForce):
-        self.a += 
+    def tick(self,deltat,vNetforce=vector(0,0)):
+        self.a.suma(vNetforce.mult(1.0/mass))
+        self.v.suma(a.mult(deltat))
+    def movement(self,deltat):
+        mov = vector()
 
 def rAng(pos1, pos2):
     return atan(float(pos1.y)-pos2.y/pos1.x-pos2.x)
