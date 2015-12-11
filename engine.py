@@ -19,13 +19,15 @@ class shooter:
         self.phsobj = phys.physicsobj()
         self.theta = 0
         self.invis = True
-        self.pos = phys.vector(0,0)
+        self.vPos = phys.vector(0,0)
         self.hp = MAXHP
         self.active = False
         return self
-    def respawn(self,pos,t):
+    def respawn(self,vPos,t):
         self.hp = MAXHP
         self.active = True
-        self.pos = pos
+        self.vPos = vPos
         self.theta = t
         self.invul = False
+    def move(self, vMovement):
+        self.pos.suma(vMovement)
