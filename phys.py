@@ -9,7 +9,7 @@ def aCRad(rad):
 class vector:
     x=0
     y=0
-    def __init__(self, x, y, r=1)
+    def __init__(self, x, y, r=1):
         self.x,self.y = r*x, r*y
         return self
 
