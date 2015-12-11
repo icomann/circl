@@ -10,9 +10,7 @@ def mDist(pos1, pos2):
     return ((pos1.x-pos2.x])**2+(pos1.y+pos2.y)**2)**0.5
     
 class vector:
-    x=0
-    y=0
-    def __init__(self, x, y, r=1):
+    def __init__(self, x=0, y=0, r=1):
         self.x,self.y = r*x, r*y
         return self
     def suma(self,ex,y='vector'):
@@ -31,10 +29,7 @@ class vector:
         self.y /= mag
 
 class polarC:
-    r=0
-    rad=0
-    inrad=1
-    def __init__(self, r, ang, inrad=True):
+    def __init__(self, r=0, ang=0, inrad=True):
         self.r = r
         self.inrad = inrad
         if !rad:
@@ -52,6 +47,9 @@ class physicsobj:
         self.v.suma(a.mult(deltat))
     def movement(self,deltat):
         mov = vector()
+        mov.suma(self.v.mult(deltat))
+        mov.suma(self.a.mult(deltat*deltat*0.5))
+        return mov
 
 def rAng(pos1, pos2):
     return atan(float(pos1.y)-pos2.y/pos1.x-pos2.x)
