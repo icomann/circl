@@ -19,6 +19,7 @@ class vector:
         if y == 'vector:
             self.x += ex.x
             self.y += ex.y
+            return
         self.x+=ex
         self.y+=y
     def mult(self,r):
