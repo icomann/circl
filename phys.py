@@ -5,13 +5,29 @@ def rCAng(ang):
     
 def aCRad(rad):
     return rad*180/math.pi
-
+    
+def mDist(pos1, pos2):
+    return ((pos1.x-pos2.x])**2+(pos1.y+pos2.y)**2)**0.5
+    
 class vector:
     x=0
     y=0
     def __init__(self, x, y, r=1):
         self.x,self.y = r*x, r*y
         return self
+    def suma(self,ex,y='vector'):
+        if y == 'vector:
+            self.x += ex.x
+            self.y += ex.y
+        self.x+=ex
+        self.y+=y
+    def mult(self,r):
+        self.x*=r
+        self.y*=r
+    def diag(self):
+        mag = mDist(self,vector(0,0))
+        self.x /= mag
+        self.y /= mag
 
 class polarC:
     r=0
@@ -24,10 +40,14 @@ class polarC:
             ang = rCAng(ang)
         self.ang = ang
         return self
-
-def mDist(pos1, pos2):
-    return ((pos1.x-pos2.x])**2+(pos1.y+pos2.y)**2)**0.5
-
+        
+class physicsobj:
+    def __init__(self, mass):
+        self.mass = mass
+        self.a = vector(0,0)
+        self.v = vector(0,0)
+    def appforce(vForce):
+        self.a += 
 
 def rAng(pos1, pos2):
     return atan(float(pos1.y)-pos2.y/pos1.x-pos2.x)
