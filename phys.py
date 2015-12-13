@@ -7,7 +7,7 @@ def aCRad(rad):
     return rad*180/math.pi
     
 def mDist(pos1, pos2):
-    return ((pos1.x-pos2.x))**2+(pos1.y+pos2.y)**2)**0.5
+    return ((pos1.x-pos2.x)**2+(pos1.y+pos2.y)**2)**0.5
     
 class vector:
     def __init__(self, x=0, y=0, r=1):
