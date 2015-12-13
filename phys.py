@@ -12,9 +12,8 @@ def mDist(pos1, pos2):
 class vector:
     def __init__(self, x=0, y=0, r=1):
         self.x,self.y = r*x, r*y
-        return self
     def suma(self,ex,y='vector'):
-        if y == 'vector:
+        if y == 'vector':
             self.x += ex.x
             self.y += ex.y
             return
@@ -32,10 +31,9 @@ class polarC:
     def __init__(self, r=0, ang=0, inrad=True):
         self.r = r
         self.inrad = inrad
-        if !rad:
+        if not inrad:
             ang = rCAng(ang)
         self.ang = ang
-        return self
         
 class physicsobj:
     def __init__(self, mass):

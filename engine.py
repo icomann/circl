@@ -8,7 +8,7 @@ class gun:
     dmg = 1
     msPeriod = 1000
     def __init__(self, gundata=0):
-        return self
+        self.guns = gundata
 
 fist = gun()
 fist.ammo = 5
@@ -22,7 +22,6 @@ class shooter:
         self.vPos = phys.vector(0,0)
         self.hp = MAXHP
         self.active = False
-        return self
     def respawn(self,vPos,t):
         self.hp = MAXHP
         self.active = True
