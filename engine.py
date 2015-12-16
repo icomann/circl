@@ -1,18 +1,39 @@
 print "Loading Physics"
 import phys
 
+phys.time.clock()
+
 MAXHP = 100
 
-class gun:
-    ammo = 1
-    dmg = 1
-    msPeriod = 1000
-    def __init__(self, gundata=0):
-        self.guns = gundata
+def placeholder(asdf):
+    print asdf
 
-fist = gun()
-fist.ammo = 5
-fist.msPeriod=0.300
+class bullet:
+    def __init__(self, gSrc, pos, vel):
+        self.gSrc = gSrc
+        self.physobj = (0, vel)
+        self.vPos = pos
+
+def wot():
+    a = 1
+
+class gun:
+    def __init__(self, gundata=(0,0,5000,wot)):
+        self.ammo = gundata[0]
+        self.lastfired = 0
+	self.dmg = gundata[1]
+	self.msPeriod = gundata[2]
+        self.effect = gundata[3]
+    def shoot(self):
+        if self.ammo == 0 or (phys.time.clock()*1000-self.lastfired)>self.msPeriod:
+            return None
+        self.ammo -= 1
+        self.lastfired = phys.time.clock()
+        return bullet(self, phys.vector(0,0), phys.vector(0,0))
+
+fist = gun((5, 1, 300, placeholder))
+k = fist.shoot()
+k.gSrc.effect(k) ## should give list of people hit
 
 class shooter:
     def __init__(self):
