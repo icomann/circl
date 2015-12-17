@@ -1,7 +1,7 @@
 print "Loading Physics"
 import phys
+import time
 
-phys.time.clock()
 
 MAXHP = 100
 
@@ -25,10 +25,10 @@ class gun:
 	self.msPeriod = gundata[2]
         self.effect = gundata[3]
     def shoot(self):
-        if self.ammo == 0 or (phys.time.clock()*1000-self.lastfired)>self.msPeriod:
+        if self.ammo == 0 or (time.clock()*1000-self.lastfired)>self.msPeriod:
             return None
         self.ammo -= 1
-        self.lastfired = phys.time.clock()
+        self.lastfired = time.clock()
         return bullet(self, phys.vector(0,0), phys.vector(0,0))
 
 fist = gun((5, 1, 300, placeholder))
