@@ -24,9 +24,8 @@ class vector:
 	return self.x*r.x+self.y+r.y
         
     def dir(self):
-        mag = mDist(self,vector(0,0))
-        self.x /= mag
-        self.y /= mag
+        mag = 1.0/mDist(self,vector(0,0))
+        return self*mag
 
 class polarC:
     def __init__(self, r=0, ang=0, inrad=True):
