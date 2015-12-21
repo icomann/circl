@@ -54,12 +54,4 @@ class shooter:
     def move(self, vMovement):
         self.pos.suma(vMovement)
 
-lel = shooter()
-t = phys.vector(4,3)
-fist = gun(lel, (5, 1, 300, placeholder, 100))
-fist.shoot(t.dir())
-while not fist.shoot(t.dir()):
-    b = 0
-print projlist
-for k in projlist:
-    k.gSrc.effect(k.gSrc.dmg)
+

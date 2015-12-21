@@ -13,19 +13,24 @@ class vector:
     def __init__(self, x=0, y=0, r=1):
         self.x,self.y = r*x, r*y
 
-    def __sum__(self,vect):
-        if y is not vector:
+    def __add__(self,vect):
+        if not isinstance(vect, vector):
             return self
         return vector(self.x+vect.x, self.y+vect.y)
 
     def __mul__(self,r):
-        if r is not vector:
+        if not isinstance(r, vector):
             return vector(self.x*r, self.y*r)
 	return self.x*r.x+self.y+r.y
         
+    def mag(self):
+        return mDist(self,vector(0,0))
+
     def dir(self):
-        mag = 1.0/mDist(self,vector(0,0))
-        return self*mag
+        ma = self.mag()
+	if not ma:
+		return vector()
+        return self*(1.0/ma)
 
 class polarC:
     def __init__(self, r=0, ang=0, inrad=True):
@@ -35,15 +40,18 @@ class polarC:
             ang = rCAng(ang)
         self.ang = ang
         
-class physicsobj:
+class physobj:
     def __init__(self, vel=vector(0,0), acc=vector(0,0)):
         self.a = acc
         self.v = vel
     def tick(self,deltat,vNetforce=vector(0,0)):
-        self.a += vNetforce
+        self.a = vNetforce
         self.v += self.a*deltat
     def movement(self,deltat):
-        return v*deltat+a*(deltat*deltat/2)
+        return self.v*deltat+self.a*(deltat*deltat/2)
+    def process(self, dt, vF=0):
+        self.tick(dt, vF)
+        return self.movement(dt)
 
 def rAng(pos1, pos2):
     return atan(float(pos1.y)-pos2.y/pos1.x-pos2.x)
