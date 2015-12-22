@@ -21,6 +21,9 @@ class vector:
     def __radd__(self, vect):
         return self
     
+    def __sub__(self, vect):
+        return self + -1*vect
+
     def __mul__(self,r):
         if not isinstance(r, vector):
             return vector(self.x*r, self.y*r)
@@ -74,12 +77,12 @@ def vCPolar(r,rad):
 def pCVect(vect):
     return polarC(atan(float(vect.y)/vect.x))
 
-def rectCol(vP1, vP2, vD1, vD2):
+def rectCof(vP1, vP2, vD1, vD2):
     dP = vP2-vP1
     det = vD1.x*vD2.y-vD2.x*vD1.y
     l1 = dP.x*vD2.y-vD2.x*dP.y
     l2 = vD1.x*dP.y-dP.x*vD1.y
-    l1 /= det
-    l2 /= -det
+    l1 /= float(det)
+    l2 /= float(-det)
     return l1, l2
 
