@@ -18,19 +18,28 @@ class vector:
             return self
         return vector(self.x+vect.x, self.y+vect.y)
 
+    def __radd__(self, vect):
+        return self
+    
     def __mul__(self,r):
         if not isinstance(r, vector):
             return vector(self.x*r, self.y*r)
 	return self.x*r.x+self.y+r.y
         
+    def __rmul__(self,r):
+        return self*r
+
+    def __floordiv_(self,r):
+        return vector(self.x/r, self.y/r)
+
     def mag(self):
-        return mDist(self,vector(0,0))
+        return (self.x**2 + self.y**2)**0.5
 
     def dir(self):
         ma = self.mag()
 	if not ma:
-		return vector()
-        return self*(1.0/ma)
+		return None
+        return self/ma
 
 class polarC:
     def __init__(self, r=0, ang=0, inrad=True):
@@ -64,3 +73,13 @@ def vCPolar(r,rad):
     
 def pCVect(vect):
     return polarC(atan(float(vect.y)/vect.x))
+
+def rectCol(vP1, vP2, vD1, vD2):
+    dP = vP2-vP1
+    det = vD1.x*vD2.y-vD2.x*vD1.y
+    l1 = dP.x*vD2.y-vD2.x*dP.y
+    l2 = vD1.x*dP.y-dP.x*vD1.y
+    l1 /= det
+    l2 /= -det
+    return l1, l2
+
