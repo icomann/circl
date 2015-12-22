@@ -36,3 +36,6 @@ class ssyst:
         ##randdrinf: (((nuthin, 40), (ubergun,10), (candy,50)), period)        beforetheylockmesillyarseaway
             line = line.split(';')
             self.planets.append(line)
+
+ssyslist = list()
+ssyslist.append(ssyst(maps/blandarena.py))
