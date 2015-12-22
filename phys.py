@@ -86,3 +86,5 @@ def rectCof(vP1, vP2, vD1, vD2):
     l2 /= float(-det)
     return l1, l2
 
+def objCol():
+    return 'k3k'
