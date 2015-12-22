@@ -32,7 +32,7 @@ class vector:
     def __rmul__(self,r):
         return self*r
 
-    def __floordiv_(self,r):
+    def __div__(self,r):
         return vector(self.x/r, self.y/r)
 
     def mag(self):
@@ -53,12 +53,20 @@ class polarC:
         self.ang = ang
         
 class physobj:
-    def __init__(self, vel=vector(0,0), acc=vector(0,0)):
-        self.a = acc
+    def __init__(self, mass=10, vel=vector(0,0), acc=vector(0,0)):
+        if mass:
+            self.a = acc
+        else:
+            self.a = 0
         self.v = vel
+        self.m = float(mass)
     def tick(self,deltat,vNetforce=vector(0,0)):
-        self.a = vNetforce
+        if not self.m:
+            return
+        self.a = vNetforce/self.m
         self.v += self.a*deltat
+    def stop(self):
+        self.v = 0
     def movement(self,deltat):
         return self.v*deltat+self.a*(deltat*deltat/2)
     def process(self, dt, vF=0):

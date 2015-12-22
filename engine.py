@@ -40,18 +40,24 @@ class gun:
 class shooter:
     def __init__(self):
         self.phsobj = phys.physicsobj()
-        self.theta = 0
+        self.vDir = vector(1,0)
         self.invis = True
         self.vPos = phys.vector(0,0)
         self.hp = MAXHP
         self.active = False
+    def hurt(self, dmg):
+        if dmg < self.hp:
+            self.hp -= dmg
+            ## lil bloodsplatter
+        else:
+            self.active = False
+            return True
     def respawn(self,vPos,t):
         self.hp = MAXHP
         self.active = True
         self.vPos = vPos
-        self.theta = t
         self.invul = False
-    def move(self, vMovement):
-        self.pos.suma(vMovement)
+    def proc(self):
+        self.pos += self.phsobj.process()
 
 
