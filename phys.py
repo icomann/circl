@@ -35,6 +35,9 @@ class vector:
     def __div__(self,r):
         return vector(self.x/r, self.y/r)
 
+    def __str__(self):
+        return str(self.x) + ', ' + str(self.y)
+
     def mag(self):
         return (self.x**2 + self.y**2)**0.5
 
@@ -53,25 +56,26 @@ class polarC:
         self.ang = ang
         
 class physobj:
-    def __init__(self, mass=10, vel=vector(0,0), acc=vector(0,0)):
-        if mass:
-            self.a = acc
-        else:
-            self.a = 0
+    def __init__(self, mass=10, vPos =vector(0,0), vel=vector(0,0)):
         self.v = vel
+        self.vPos = vPos
+        self.vMov = vector(0,0)
         self.m = float(mass)
-    def tick(self,deltat,vNetforce=vector(0,0)):
-        if not self.m:
-            return
+
+    def tick(self,deltat,vNetforce=vector(0,0)):#do not use on massles object
         self.a = vNetforce/self.m
         self.v += self.a*deltat
+
     def stop(self):
         self.v = 0
-    def movement(self,deltat):
-        return self.v*deltat+self.a*(deltat*deltat/2)
-    def process(self, dt, vF=0):
+
+    def movement(self,deltat):#later, vMov can be used for collision testing
+        self.vMov = self.v*deltat+self.a*(deltat*deltat/2)
+
+    def process(self, dt, vF=0):#Not for actual use, lacks hitscan
         self.tick(dt, vF)
-        return self.movement(dt)
+        self.movement(dt)
+        self.vPos += self.vMov
 
 def rAng(pos1, pos2):
     return atan(float(pos1.y)-pos2.y/pos1.x-pos2.x)
