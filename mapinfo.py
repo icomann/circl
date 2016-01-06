@@ -1,4 +1,5 @@
 from phys import vector
+from comp import folder
 from os import listdir
 
 class planet:
@@ -41,14 +42,14 @@ class ssyst:
         line = 'Sistema ' + self.title + '.\n'
         line += 'Made by ' + self.author + ' for ' + str(self.pl[0])
         line += ' to ' + str(self.pl[1]) + ' players.\n'
-        line += '\nContains ' + str(len(self.planets)) + ' planets:\n\n'
+        line += '\nContains ' + str(len(self.planets)) + ' planets in a '
+        line += str(self.radius) + ' radius:\n\n'
         line += 'POS\t\tSize\tSpawner\tGrav\n'
         for plan in self.planets:
             line += str(plan.vPos).ljust(16) + '\t'.join(map(str, [plan.radius, plan.spawn, plan.force])) + '\n'
         return line
 
 ssyslist = list()
-##hay que pillar los mapas dinamicamente ahora
-maplist = listdir('maps')
+maplist = listdir(folder('maps'))
 for lvl in maplist:
-    ssyslist.append(ssyst('maps/' + lvl))
+    ssyslist.append(ssyst(folder('maps', lvl)))
