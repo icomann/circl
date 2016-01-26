@@ -18,7 +18,7 @@ class vector:
             return self
         return vector(self.x+vect.x, self.y+vect.y)
 
-    def tup(self)
+    def tup(self):
         return self.x, self.y
 
     def __radd__(self, vect):

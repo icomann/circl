@@ -37,7 +37,7 @@ class gun:
         return bullet(self, angle)
 
 class shooter:
-    def __init__(self, vPos=vector(0,0)):
+    def __init__(self, vPos=phys.vector(0,0)):
         self.phsobj = phys.physobj(20, vPos)
         self.aDir = 0
         self.hp = MAXHP

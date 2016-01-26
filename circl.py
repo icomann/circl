@@ -10,7 +10,7 @@ print "Loading pygame"
 import pygame
 print "Loading configuration"
 import config
-import sprites
+import sprite
 from comp import folder
 from time import clock
 
@@ -30,7 +30,7 @@ print mp
 
 
 class gamestate:
-    def __init__(mp, mode, time, playerlist, resp):
+    def __init__(self, mp, mode, time, playerlist, resp):
         self.ssys = mp
         self.mode = mode
         self.timeleft = time
@@ -43,37 +43,37 @@ class gamestate:
         self.bg = pygame.Surface((self.ssys.radius*2, self.ssys.radius*2)).convert()
 
         try:
-            a = pygame.image.load('bulshit').convert()
+            a = sprite.load('bullshit')
             self.bg.blit(a)
             del a
         except:
-            self.bg.fill(pygame.BLACK)
+            self.bg.fill((70,20,0))
 
         for plan in self.ssys.planets:
-            pygame.draw.circle(bg, plan.color, (self.vPos-vector(plan.radius, plan.radius)/2).tup(), plan.radius)
+            pygame.draw.circle(self.bg, plan.color, (plan.vPos.x-plan.radius, plan.vPos.y-plan.radius), plan.radius)
 
-        self.mainrender.blit(self.bg)
+        self.mainrender.blit(self.bg, (0,0))
 
         p = 0
         for player in self.playerlist:
-            player.pov = pygame.Surface(config.grw/playerc, config.grh)
-            player.povpos = (p*config.grw/playerc, config.grh)
+            player.pov = pygame.Surface((config.grw/self.playerc, config.grh))
+            player.povpos = (p*config.grw/self.playerc, config.grh)
             p += 1
 
 
 def physloop(gs, dT):
     for player in gs.playerlist:
         player.phsobj.tick(dT)#get forces later
-        player.pshobj.movement(dT,1)
+        player.phsobj.movement(dT,1)
     for bullet in gs.projset:
         bullet.movement(dT)
 
     #HITSCAN KOMMT HIER
 
     for player in gs.playerlist:
-        player.move()
-    for bullet in gs.projset()
-        bullet.move()
+        player.phsobj.move()
+    for bullet in gs.projset:
+        bullet.phsobj.move()
 
 
 def spawnloop(gs, dT):
@@ -86,41 +86,43 @@ def spawnloop(gs, dT):
 
     for planet in gs.ssys.planets:
         if planet.lastspawn <= dT:
-            planet.spawn()
+            planet.spawnnow()
         else:
             planet.lastspawn -= dT
 
 
 
 def prevcorner(obj):
-    return obj.sprite.get_rect(center = (obj.pshobj.vPos-obj.phsobj.vMov).tup())
+    return obj.sprite.get_rect(center = (obj.phsobj.vPos-obj.phsobj.vMov).tup())
 
-def nowcorner(obj)
-    return obj.sprite.get_rect(center = obj.pshobj.vPos.tup())
+def nowcorner(obj):
+    return obj.sprite.get_rect(center = obj.phsobj.vPos.tup())
 
 def renderloop(gs, window):
-    for bullet in gs.proyset:
-        gs.mainrender.blit(bg, prevcorner(bullet))
+    for bullet in gs.projset:
+        gs.mainrender.blit(gs.bg, prevcorner(bullet))
     for player in gs.playerlist:
-        gs.mainrender.blit(bg, prevcorner(player))
+        gs.mainrender.blit(gs.bg, prevcorner(player))
 
-    for bullet in gs.proyset:#MUST ROTATE LTER
-        bullet.sprite.blit(mainrender, nowcorner(bullet))
+    for bullet in gs.projset:#MUST ROTATE LTER
+        bullet.sprite.blit(gs.mainrender, nowcorner(bullet))
     for player in gs.playerlist:
-        player.sprite.blit(mainrender, nowcorner(player))
+        player.sprite.blit(gs.mainrender, nowcorner(player))
 
 
 
     for player in gs.playerlist:
-        helper = player.pov.pygame.transform(player.aDir)
-        gs.mainrender.blit(helper, (0,0), helper.get_rect(center=player.phsobj.vPov.tup()))
-        helper = helper.pygame.transform(-player.aDir)
+        helper = pygame.transform.rotate(player.pov, player.aDir)
+        gs.mainrender.blit(helper, (0,0), helper.get_rect(center=player.phsobj.vPos.tup()))
+        helper = pygame.transform.rotate(helper, -player.aDir)
         player.pov.blit(helper, (0,0), player.pov.get_rect(center=(helper.get_size()[0]/2, helper.get_size()[1]/2)))
 
+        window.blit(gs.bg, (0,0))
         window.blit(player.pov, player.povpos)
 
         #DRAW HUD HERE
         
+        pygame.display.flip()
     
 
 
@@ -135,6 +137,7 @@ def rulesloop(gs, delta):
 
 
 def gameloop(gamestate, deltat, window):
+    print deltat
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             return False
@@ -152,6 +155,8 @@ pygame.init()
 pywindow = pygame.display.set_mode((config.grw, config.grh), pygame.RESIZABLE)
 
 players = [engine.shooter()]
+for wn in players:
+    wn.sprite = sprite.load('char/randdude.png', pywindow)
 settings = gamestate(mp, 2, 60, players, 5)
 
 a=True

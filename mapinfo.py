@@ -3,18 +3,18 @@ from comp import folder
 from os import listdir
 
 class planet:
-    def __init__(self, dataarray):
+    def __init__(self, dataarray, size):
         S, x, y, r, f, fr, i, t, c = dataarray
         self.spawn = (S=='*')
         self.radius = int(r)
         self.fradius = int(fr)
         self.force = int(f)
-        self.vPos = vector(x,-y)+vector(self.radius, self.radius)
+        self.vPos = vector(int(x),-int(y))+vector(size, size)
         self.items = i
         self.period = int(t)
         self.lastspawn = self.period
-        self.color = tuple(c.split('-'))
-    def spawn(self):
+        self.color = tuple(map(int, c.split(',')))
+    def spawnnow(self):
         self.lastspawn = self.period
         print "Planet " + self.vPos + ' should have spawned a thing.'
 
@@ -41,7 +41,7 @@ class ssyst:
         ## planet: [((x,y), radius, force, (randomdropinfo), color/text), ...] hopeigettoletyouknow
         ##randdrinf: (((nuthin, 40), (ubergun,10), (candy,50)), period)        beforetheylockmesillyarseaway
             line = line.split(';')
-            self.planets.append(planet(line))
+            self.planets.append(planet(line, self.radius))
     def __str__(self):
         line = 'Sistema ' + self.title + '.\n'
         line += 'Made by ' + self.author + ' for ' + str(self.pl[0])
