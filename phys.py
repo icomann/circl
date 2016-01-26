@@ -57,20 +57,23 @@ class polarC:
         
 class physobj:
     def __init__(self, mass=10, vPos =vector(0,0), vel=vector(0,0)):
+        self.a = vector(0,0)
         self.v = vel
         self.vPos = vPos
         self.vMov = vector(0,0)
+        self.vNForce = vector(0,0)
         self.m = float(mass)
 
-    def tick(self,deltat,vNetforce=vector(0,0)):#do not use on massless object
-        self.a = vNetforce/self.m
+    def tick(self,deltat):#do not use on massless object
+        self.a = self.vNForce/self.m
         self.v += self.a*deltat
+        self.vNForce = vector(0,0)
 
     def stop(self):
         self.v = 0
 
-    def movement(self,deltat):#later, vMov can be used for collision testing
-        self.vMov = self.v*deltat+self.a*(deltat*deltat/2)
+    def movement(self,deltat, mass=0):
+        self.vMov = self.v*deltat-mass*self.a*((deltat*deltat)/2.0)
 
     def move(self):
 	self.vPos += self.vMov

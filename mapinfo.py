@@ -12,7 +12,11 @@ class planet:
         self.force = int(f)
         self.items = i
         self.period = int(t)
+        self.lastspawn = self.period
         self.color = tuple(c.split('-'))
+    def spawn(self):
+        self.lastspawn = self.period
+        print "Planet " + self.vPos + ' should have spawned a thing.'
 
 class ssyst:
     def __init__(self, file):

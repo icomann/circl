@@ -41,20 +41,21 @@ class gun:
         return bullet(self, angle)
 
 class shooter:
-    def __init__(self):
-        self.phsobj = phys.physobj()
-        self.vDir = phys.vector(1,0)
+    def __init__(self, vPos=vector(0,0)):
+        self.phsobj = phys.physobj(20, vPos)
+        self.aDir = 0
         self.hp = MAXHP
         self.gun = None
-        self.active = False #gameloop analyses or respawns depending on this
+        self.ded = 0 #gameloop analyses or respawns depending on this
     def hurt(self, dmg):
         if dmg < self.hp:
             self.hp -= dmg
             ## lil bloodsplatter
         else:
-            self.active = False
-    def respawn(self,vPos,t):
+            self.active = -1
+    def respawn(self,vPos):
         self.hp = MAXHP
-        self.active = True
-        self.vPos = vPos
+        self.ded = 0
+        self.phsobj.vPos = vPos
+        self.phsobj.stop()
 

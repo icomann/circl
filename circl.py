@@ -23,6 +23,11 @@ print mp
 
 
 
+
+
+
+
+
 class gamestate:
     def __init__(mp, mode, time, playerlist):
         self.ssys = mp
@@ -32,6 +37,40 @@ class gamestate:
         self.playerc = len(self.playerlist)
         self.itemset= set()
         self.projset = set()
+
+
+def physloop(gs, dT):
+    for player in gs.playerset:
+        player.phsobj.tick(dT)#get forces later
+        player.pshobj.movement(dT,1)
+    for bullet in gs.projset:
+        bullet.movement(dT)
+
+    #HITSCAN KOMMT HIER
+
+    for player in gs.playerset:
+        player.move()
+    for bullet in gs.projset()
+        bullet.move()
+
+
+def spawnloop(gs, dT):
+    for player in gs.playerset:
+        if player.ded != 0:
+            if player.ded == -1:
+                played.ded = gs.respawntime
+            elif player.ded <= dT:
+                player.respawn(phys.vector(0,0))#find spawnpoint
+            else:
+                player.ded -= dT
+
+def gameloop(gamestate, window):
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+
+
 
 
 
@@ -50,26 +89,6 @@ views[0] = pygame.Surface(displaysize).convert()
 #make different sizes for later
 
 
-def physloop(gs, dT):
-    for player in gs.playerset:
-        player.phsobj.tick(dT)#get forces later
-        player.pshobj.movement(dT)
-    for bullet in gs.projset:
-        bullet.movement(dT)
-
-    #HITSCAN KOMMT HIER
-
-    for player in gs.playerset:
-        player.move()
-    for bullet in gs.projset()
-        bullet.move()
-
-
-def gameloop(gamestate, window):
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                quit()
 
 
 

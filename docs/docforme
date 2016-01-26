@@ -4,7 +4,6 @@ el algoritmo de movimiento seria mas o menos:
 -calcular fuerzas
 -calcular aceleraciones
 -calcular vector desplazamiento de todo
--calcular nuevo vector velocidad
 -buscar golpes (en rectangulos, usar 4 vectores por cada lado)
 -recalcular golpes
 -aplicar desplazamiento
