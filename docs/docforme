@@ -31,5 +31,5 @@ gameloop:
 -damash
 -respawns
 -item spawns
--timer
 -render
+rulesloop checks for winners, timeout

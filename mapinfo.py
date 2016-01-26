@@ -5,11 +5,11 @@ from os import listdir
 class planet:
     def __init__(self, dataarray):
         S, x, y, r, f, fr, i, t, c = dataarray
-        self.vPos = vector(x,y)
         self.spawn = (S=='*')
         self.radius = int(r)
         self.fradius = int(fr)
         self.force = int(f)
+        self.vPos = vector(x,-y)+vector(self.radius, self.radius)
         self.items = i
         self.period = int(t)
         self.lastspawn = self.period

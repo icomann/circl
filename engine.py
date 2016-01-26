@@ -2,8 +2,6 @@ print "Loading Physics"
 import phys
 import time
 
-projlist = set()
-
 MAXHP = 100
 
 def placeholder(asdf):
@@ -14,10 +12,8 @@ class bullet:
         self.gSrc = gSrc
         self.owner = gSrc.owner
         self.phsobj = phys.physobj(0, self.owner.phsobj.vPos, dire*gSrc.mV)
-        projlist.add(self)
     def hit(self):
         self.gSrc.effect()
-        projlist.remove(self)
         self.gSrc.ammo += 1 ## REMOVE THIS LATER
         del self
 
@@ -52,7 +48,7 @@ class shooter:
             self.hp -= dmg
             ## lil bloodsplatter
         else:
-            self.active = -1
+            return True
     def respawn(self,vPos):
         self.hp = MAXHP
         self.ded = 0
