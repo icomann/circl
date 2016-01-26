@@ -1,0 +1,36 @@
+hay listas con weas que se mueven
+
+el algoritmo de movimiento seria mas o menos:
+-calcular fuerzas
+-calcular aceleraciones
+-calcular vector desplazamiento de todo
+-calcular nuevo vector velocidad
+-buscar golpes (en rectangulos, usar 4 vectores por cada lado)
+-recalcular golpes
+-aplicar desplazamiento
+
+
+para mostrar la pantalla:
+-hacer un background gigante de la foto de background con planetas dibujados encima
+-dibujar todo ahi, si algo se mueve, tapar donde estaba, mostrar nuevo
+ *Como el desplazamiento se calcula al PRINCIPIO del proceso de fisica,
+  usar vector para calcular posicion antigua, dar borde de ~5 pixeles para
+  no tener problemas de redondeo
+-para wn girado 330 (theta) por ejemplo:
+  -hacer Surface
+  -girar Surface 330
+  -usando el centro y tamano de surface girada, blitearle area correcta de la
+   Surface background
+  -girar surface 30 (360 - theta) para que no este chuecha, blitear centro de
+   tamano correcto a la pantalla
+
+RENDER DOES WHOLE CLEANUP THEN WHOLE RENDER
+PARTIAL CLEANUP RESULTS IN CURRENT RENDER BEING ERASED TOO
+
+gameloop:
+-fisica
+-damash
+-respawns
+-item spawns
+-timer
+-render
