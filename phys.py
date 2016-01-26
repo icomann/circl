@@ -62,7 +62,7 @@ class physobj:
         self.vMov = vector(0,0)
         self.m = float(mass)
 
-    def tick(self,deltat,vNetforce=vector(0,0)):#do not use on massles object
+    def tick(self,deltat,vNetforce=vector(0,0)):#do not use on massless object
         self.a = vNetforce/self.m
         self.v += self.a*deltat
 
@@ -72,10 +72,8 @@ class physobj:
     def movement(self,deltat):#later, vMov can be used for collision testing
         self.vMov = self.v*deltat+self.a*(deltat*deltat/2)
 
-    def process(self, dt, vF=0):#Not for actual use, lacks hitscan
-        self.tick(dt, vF)
-        self.movement(dt)
-        self.vPos += self.vMov
+    def move(self):
+	self.vPos += self.vMov
 
 def rAng(pos1, pos2):
     return atan(float(pos1.y)-pos2.y/pos1.x-pos2.x)

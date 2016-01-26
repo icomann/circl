@@ -38,7 +38,7 @@ class gun:
             return
         self.ammo -= 1
         self.lastfired = time.clock()*1000
-        bullet(self, angle)
+        return bullet(self, angle)
 
 class shooter:
     def __init__(self):
