@@ -35,7 +35,7 @@ class gamestate:
         self.mode = mode
         self.timeleft = time
         self.respawntime = resp
-        self.playerlist = set(playerlist)
+        self.playerlist = playerlist
         self.playerc = len(self.playerlist)
         self.itemset= set()
         self.projset = set()
@@ -142,9 +142,23 @@ def rulesloop(gs, delta):
 
 
 def gameloop(gamestate, deltat, window):
+    ph = gamestate.playerlist[0].phsobj
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             return False
+    
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_UP]:
+        ph.vPos += engine.phys.vector(0,1)*100*deltat
+    elif keys[pygame.K_DOWN]:
+        ph.vPos -= engine.phys.vector(0,1)*100*deltat
+    if keys[pygame.K_RIGHT]:
+        ph.vPos += engine.phys.vector(1,0)*100*deltat
+    elif keys[pygame.K_LEFT]:
+        ph.vPos -= engine.phys.vector(1,0)*100*deltat
+  
+
+    print gamestate.playerlist[0].phsobj.vPos
 
     physloop(gamestate, deltat)
     spawnloop(gamestate, deltat)
