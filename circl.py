@@ -40,14 +40,17 @@ class gamestate:
         self.itemset= set()
         self.projset = set()
         self.mainrender = pygame.Surface((self.ssys.radius*2, self.ssys.radius*2)).convert()
-        self.bg = pygame.Surface((self.ssys.radius*2, self.ssys.radius*2)).convert()
+        self.bg = pygame.Surface(self.mainrender.get_size()).convert()
 
         try:
-            a = sprite.load('bullshit')
-            self.bg.blit(a)
-            del a
+            a = pygame.image.load(folder('sprites', 'maps', 'wea'))
         except:
-            self.bg.fill((70,20,0))
+            a = pygame.image.load(folder('sprites', 'maps', "default.png"))
+
+        pygame.transform.scale(a, self.mainrender.get_size())
+        a.convert()
+        self.bg.blit(a, (0,0))
+        del a
 
         for plan in self.ssys.planets:
             pygame.draw.circle(self.bg, plan.color, (plan.vPos.x-plan.radius, plan.vPos.y-plan.radius), plan.radius)
@@ -100,9 +103,11 @@ def nowcorner(obj):
 
 def renderloop(gs, window):
     for bullet in gs.projset:
-        gs.mainrender.blit(gs.bg, prevcorner(bullet))
+        prev = prevcorner(bullet)
+        gs.mainrender.blit(gs.bg, prev, prev)
     for player in gs.playerlist:
-        gs.mainrender.blit(gs.bg, prevcorner(player))
+        prev = prevcorner(player)
+        gs.mainrender.blit(gs.bg, prev, prev)
 
     for bullet in gs.projset:#MUST ROTATE LTER
         bullet.sprite.blit(gs.mainrender, nowcorner(bullet))
@@ -122,7 +127,7 @@ def renderloop(gs, window):
 
         #DRAW HUD HERE
         
-        pygame.display.flip()
+    pygame.display.flip()
     
 
 
@@ -137,7 +142,6 @@ def rulesloop(gs, delta):
 
 
 def gameloop(gamestate, deltat, window):
-    print deltat
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             return False
@@ -152,9 +156,9 @@ def gameloop(gamestate, deltat, window):
 
 #pygame init
 pygame.init()
-pywindow = pygame.display.set_mode((config.grw, config.grh), pygame.RESIZABLE)
+pywindow = pygame.display.set_mode((config.grw, config.grh))
 
-players = [engine.shooter()]
+players = [engine.shooter(engine.phys.vector(mp.radius, mp.radius))]
 for wn in players:
     wn.sprite = sprite.load('char/randdude.png', pywindow)
 settings = gamestate(mp, 2, 60, players, 5)

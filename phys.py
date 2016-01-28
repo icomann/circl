@@ -76,7 +76,7 @@ class physobj:
         self.v = 0
 
     def movement(self,deltat, mass=0):
-        self.vMov = self.v*deltat-mass*self.a*((deltat*deltat)/2.0)
+        self.vMov = self.v*deltat-mass*self.a*((deltat*deltat)/2)
 
     def move(self):
 	self.vPos += self.vMov
