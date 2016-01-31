@@ -1,5 +1,7 @@
 import math
 
+maxThrust = 1500
+
 def rCAng(ang):
     return math.pi*ang/180
     
@@ -62,13 +64,15 @@ class physobj:
     def __init__(self, mass=10, vPos =vector(0,0), vel=vector(0,0)):
         self.a = vector(0,0)
         self.v = vel
+        self.aDir = 0
         self.vPos = vPos
         self.vMov = vector(0,0)
         self.vNForce = vector(0,0)
+        self.vCForce = vector(0,0)
         self.m = float(mass)
 
     def tick(self,deltat):#do not use on massless object
-        self.a = self.vNForce/self.m
+        self.a = (self.vNForce + 1500*self.vCForce)/self.m
         self.v += self.a*deltat
         self.vNForce = vector(0,0)
 

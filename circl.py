@@ -70,9 +70,10 @@ def physloop(gs, dT):
         player = player.phsobj
 
         for planet in gs.ssys.planets:
-            d = engine.phys.mDist(player.vPos, planet.vPos)
-            if d < planet.fradius:
-                player.vNForce += (planet.vPos-player.vPos).dir()*planet.force
+            d = planet.vPos-player.vPos
+            dm = d.mag()
+            if dm < planet.fradius and dm > planet.radius:
+                player.vNForce += d.dir()*planet.force
 
         player.tick(dT)#get forces later
         player.movement(dT,1)
@@ -124,9 +125,9 @@ def renderloop(gs, window):
 
 
     for player in gs.playerlist:
-        helper = pygame.transform.rotate(player.pov, player.aDir)
+        helper = pygame.transform.rotate(player.pov, player.phsobj.aDir)
         helper.blit(gs.mainrender, (0,0), helper.get_rect(center=player.phsobj.vPos.tup()))
-        helper = pygame.transform.rotate(helper, -player.aDir)
+        helper = pygame.transform.rotate(helper, -player.phsobj.aDir)
         player.pov.blit(helper, (0,0), player.pov.get_rect(center=(helper.get_size()[0]/2, helper.get_size()[1]/2)))
 
         window.blit(player.pov, player.povpos)
@@ -179,10 +180,11 @@ def gameloop(gamestate, deltat, window):
 pygame.init()
 pywindow = pygame.display.set_mode((config.grw, config.grh))
 
-players = [engine.shooter(engine.phys.vector(mp.radius, mp.radius))]
+players = [engine.shooter(engine.phys.vector(mp.radius, mp.radius)), engine.shooter(engine.phys.vector(mp.radius-100, mp.radius+200))]
 for wn in players:
     wn.sprite = sprite.load('char/randdude.png', pywindow)
     wn.last = nowcorner(wn)
+players[1].phsobj.aDir = 30
 settings = gamestate(mp, 2, 60, players, 5)
 
 a=True
