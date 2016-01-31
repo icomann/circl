@@ -95,25 +95,22 @@ def spawnloop(gs, dT):
 
 
 
-def prevcorner(obj):
-    return obj.sprite.get_rect(center = (obj.phsobj.vPos-obj.phsobj.vMov).tup())
-
 def nowcorner(obj):
     return obj.sprite.get_rect(center = obj.phsobj.vPos.tup())
 
 def renderloop(gs, window):
+
     for bullet in gs.projset:
-        prev = prevcorner(bullet)
-        gs.mainrender.blit(gs.bg, prev, prev)
+        gs.mainrender.blit(gs.bg, bullet.last, bullet.last)
     for player in gs.playerlist:
-        prev = prevcorner(player)
-        print prev
-        gs.mainrender.blit(gs.bg, prev, prev)
+        gs.mainrender.blit(gs.bg, player.last, player.last)
 
     for bullet in gs.projset:#MUST ROTATE LTER
         gs.mainrender.blit(bullet.sprite, nowcorner(bullet))
+        bullet.last = nowcorner(bullet)
     for player in gs.playerlist:
         gs.mainrender.blit(player.sprite, nowcorner(player))
+        player.last = nowcorner(player)
 
 
 
@@ -173,6 +170,7 @@ pywindow = pygame.display.set_mode((config.grw, config.grh))
 players = [engine.shooter(engine.phys.vector(mp.radius, mp.radius))]
 for wn in players:
     wn.sprite = sprite.load('char/randdude.png', pywindow)
+    wn.last = nowcorner(wn)
 settings = gamestate(mp, 2, 60, players, 5)
 
 a=True
@@ -181,7 +179,3 @@ while a:
     b = clock()-now
     now += b
     a = gameloop(settings, b, pywindow)
-    print a
-
-print 'u w0t'
-print 'm8'
