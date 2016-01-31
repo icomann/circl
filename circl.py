@@ -53,7 +53,8 @@ class gamestate:
         del a
 
         for plan in self.ssys.planets:
-            pygame.draw.circle(self.bg, plan.color, (plan.vPos.x-plan.radius, plan.vPos.y-plan.radius), plan.radius)
+            pygame.draw.circle(self.bg, plan.color, plan.vPos.tup(), plan.radius)
+            pygame.draw.circle(self.bg, (35,255,255), plan.vPos.tup(), plan.fradius, 10)
 
         self.mainrender.blit(self.bg, (0,0))
 
@@ -66,8 +67,16 @@ class gamestate:
 
 def physloop(gs, dT):
     for player in gs.playerlist:
-        player.phsobj.tick(dT)#get forces later
-        player.phsobj.movement(dT,1)
+        player = player.phsobj
+
+        for planet in gs.ssys.planets:
+            d = engine.phys.mDist(player.vPos, planet.vPos)
+            if d < planet.fradius:
+                player.vNForce += (planet.vPos-player.vPos).dir()*planet.force
+
+        player.tick(dT)#get forces later
+        player.movement(dT,1)
+
     for bullet in gs.projset:
         bullet.movement(dT)
 
@@ -143,6 +152,9 @@ def gameloop(gamestate, deltat, window):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             return False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == 32:
+                gamestate.playerlist[0].phsobj.stop()
     
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP]:
