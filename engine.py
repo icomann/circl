@@ -39,7 +39,6 @@ class gun:
 class shooter:
     def __init__(self, vPos=phys.vector(0,0)):
         self.phsobj = phys.physobj(20, vPos)
-        self.aDir = 0
         self.hp = MAXHP
         self.gun = None
         self.ded = 0 #gameloop analyses or respawns depending on this

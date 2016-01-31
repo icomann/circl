@@ -16,7 +16,7 @@ class planet:
         self.color = tuple(map(int, c.split(',')))
     def spawnnow(self):
         self.lastspawn = self.period
-        print "Planet " + self.vPos + ' should have spawned a thing.'
+        print "Planet " + str(self.vPos) + ' should have spawned a thing.'
 
 class ssyst:
     def __init__(self, file):

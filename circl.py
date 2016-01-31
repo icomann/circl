@@ -47,14 +47,15 @@ class gamestate:
         except:
             a = pygame.image.load(folder('sprites', 'maps', "default.png"))
 
-        a = pygame.transform.scale(a, self.mainrender.get_size())
         a.convert()
+        self.bg.fill((20,20,60))
         self.bg.blit(a, (0,0))
         del a
 
         for plan in self.ssys.planets:
+            pygame.draw.circle(self.bg, (min(255, plan.force/8),50,50+max(0, 120-plan.force/4)), plan.vPos.tup(), plan.fradius, 5+plan.force/60)
+        for plan in self.ssys.planets:
             pygame.draw.circle(self.bg, plan.color, plan.vPos.tup(), plan.radius)
-            pygame.draw.circle(self.bg, (35,255,255), plan.vPos.tup(), plan.fradius, 10)
 
         self.mainrender.blit(self.bg, (0,0))
 
@@ -180,11 +181,15 @@ def gameloop(gamestate, deltat, window):
 pygame.init()
 pywindow = pygame.display.set_mode((config.grw, config.grh))
 
-players = [engine.shooter(engine.phys.vector(mp.radius, mp.radius)), engine.shooter(engine.phys.vector(mp.radius-100, mp.radius+200))]
+players = []
+for a in range(0,3):
+    players.append(engine.shooter(engine.phys.vector(mp.radius+128*a, mp.radius)))
 for wn in players:
     wn.sprite = sprite.load('char/randdude.png', pywindow)
     wn.last = nowcorner(wn)
 players[1].phsobj.aDir = 30
+players[1].sprite = sprite.load('char/shirtdude.png', pywindow)
+
 settings = gamestate(mp, 2, 60, players, 5)
 
 a=True
