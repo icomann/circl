@@ -53,7 +53,7 @@ class gamestate:
         del a
 
         for plan in self.ssys.planets:
-            pygame.draw.circle(self.bg, (min(255, plan.force/8),50,50+max(0, 120-plan.force/4)), plan.vPos.tup(), plan.fradius, 5+plan.force/60)
+            pygame.draw.circle(self.bg, (min(255, plan.force/8),50,50+max(0, 120-plan.force/4)), plan.vPos.tup(), plan.fradius, 5+plan.force/70)
         for plan in self.ssys.planets:
             pygame.draw.circle(self.bg, plan.color, plan.vPos.tup(), plan.radius)
 
@@ -107,21 +107,27 @@ def spawnloop(gs, dT):
 
 
 def nowcorner(obj):
-    return obj.sprite.get_rect(center = obj.phsobj.vPos.tup())
+    return obj.rosprite.get_rect(center = obj.phsobj.vPos.tup())
+
+def renderthing(gs,  thing):
+        thing.rosprite = pygame.transform.rotate(thing.sprite, thing.phsobj.aDir)
+        thing.last = nowcorner(thing)
+        gs.mainrender.blit(thing.rosprite, thing.last)
+
+def cleanthing(gs, thing):
+        gs.mainrender.blit(gs.bg, thing.last, thing.last)
 
 def renderloop(gs, window):
 
     for bullet in gs.projset:
-        gs.mainrender.blit(gs.bg, bullet.last, bullet.last)
+        cleanthing(gs, bullet)
     for player in gs.playerlist:
-        gs.mainrender.blit(gs.bg, player.last, player.last)
+        cleanthing(gs, player)
 
     for bullet in gs.projset:#MUST ROTATE LTER
-        gs.mainrender.blit(bullet.sprite, nowcorner(bullet))
-        bullet.last = nowcorner(bullet)
+        renderthing(gs, bullet)
     for player in gs.playerlist:
-        gs.mainrender.blit(player.sprite, nowcorner(player))
-        player.last = nowcorner(player)
+        renderthing(gs, player)
 
 
 
@@ -167,7 +173,13 @@ def gameloop(gamestate, deltat, window):
         ph.vPos += engine.phys.vector(1,0)*500*deltat
     elif keys[pygame.K_LEFT]:
         ph.vPos -= engine.phys.vector(1,0)*500*deltat
+    if keys[pygame.K_e]:
+        ph.aDir -= 90*deltat
+    if keys[pygame.K_q]:
+        ph.aDir += 90*deltat
   
+
+    print 1/deltat
 
     physloop(gamestate, deltat)
     spawnloop(gamestate, deltat)
@@ -186,6 +198,7 @@ for a in range(0,3):
     players.append(engine.shooter(engine.phys.vector(mp.radius+128*a, mp.radius)))
 for wn in players:
     wn.sprite = sprite.load('char/randdude.png', pywindow)
+    wn.rosprite = pygame.transform.rotate(wn.sprite, wn.phsobj.aDir)
     wn.last = nowcorner(wn)
 players[1].phsobj.aDir = 30
 players[1].sprite = sprite.load('char/shirtdude.png', pywindow)
